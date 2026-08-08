@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MainStreet Local | Find It. Local.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary: #1a4f8b; /* Deep trustworthy blue */
+            --accent: #27ae60; /* Approachable green */
+            --bg: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #555555;
+            --surface: #f9fafb;
+            --border: #e5e7eb;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            font-family: var(--sans);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* NAVIGATION */
+        header {
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--primary);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 3rem 0 5rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0.5rem 0 1.5rem;
+            color: var(--text-dark);
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--primary);
+        }
+
+        .hero p.lead {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 0.5rem;
+            font-weight: 500;
+        }
+
+        .hero p.support {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 550px;
+            margin: 0 auto 3rem;
+            opacity: 0.8;
+        }
+
+        /* SEARCH INTERFACE MOCKUP */
+        .search-preview-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .search-container {
+            background: #fff;
+            padding: 0.75rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+            padding: 0.5rem;
+        }
+
+        .search-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            border: none;
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            padding: 0.5rem 0;
+            outline: none;
+        }
+
+        .search-input-wrapper input::placeholder {
+            color: #ccc;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            width: 100%;
+        }
+
+        .btn-find {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            font-family: var(--sans);
+        }
+
+        .btn-find:active {
+            transform: scale(0.98);
+        }
+
+        /* PROBLEM SECTION */
+        .problem-section {
+            background: var(--surface);
+            padding: 5rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-tagline {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .problem-section h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .problem-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .icon-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-top: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .problem-item p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .solution-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .solution-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* PARTICIPATION SECTION (STEP 2) */
+        .participation-section {
+            padding: 5rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .participation-section h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .participation-section p.intro {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin-bottom: 1.5rem;
+        }
+
+        .participation-section p.transition {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3rem;
+        }
+
+        /* FEEDBACK FORM */
+        .feedback-form {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            text-align: left;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: var(--sans);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: var(--sans);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        .closing-statement {
+            text-align: center;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .closing-statement p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 1.5rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-logo {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #aaa;
+            letter-spacing: normal;
+            text-decoration: none;
+        }
+
+        /* DESKTOP RESPONSIVE */
+        @media (min-width: 768px) {
+            .hero {
+                padding: 6rem 0 8rem;
+            }
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+            .hero p.lead {
+                font-size: 1.5rem;
+            }
+
+            .search-container {
+                flex-direction: row;
+                align-items: center;
+                padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+                height: 80px;
+                gap: 0;
+            }
+
+            .search-group {
+                flex: 1;
+                padding: 0;
+            }
+
+            .divider {
+                width: 1px;
+                height: 40px;
+                margin: 0 1.5rem;
+            }
+
+            .btn-find {
+                padding: 0 2.5rem;
+                height: 60px;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+
+            .problem-section h2, .participation-section h2 {
+                font-size: 3rem;
+                max-width: 600px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-submit {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="container">
+        <a href="#" class="logo">MainStreet Local</a>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero container">
+            <span class="section-tagline" style="opacity: 0.6;">WE'RE BUILDING IT</span>
+            <h1>Find It. <span>Local.</span></h1>
+            <p class="lead">Need something? Find it nearby.</p>
+            <p class="support">Imagine searching once and seeing what's available at local businesses near you.</p>
+
+            <span class="search-preview-label">IMAGINE THIS.</span>
+            <div class="search-container">
+                <div class="search-group">
+                    <label>What are you looking for?</label>
+                    <div class="search-input-wrapper">
+                        <input type="text" placeholder="Hardware, coffee, dry cleaning...">
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="search-group">
+                    <label>Where?</label>
+                    <div class="search-input-wrapper">
+                        <input type="text" value="Near me">
+                    </div>
+                </div>
+
+                <button class="btn-find">Find It</button>
+            </div>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="problem-section">
+            <div class="container">
+                <span class="section-tagline">The Mission</span>
+                <h2>Finding something shouldn't be this hard.</h2>
+                
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <div class="icon-dot"></div>
+                        <p>Searching multiple websites that don't always show local stock.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="icon-dot"></div>
+                        <p>Calling different stores to see if they have a specific item on the shelf.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="icon-dot"></div>
+                        <p>Driving around town hoping the store you visit has what you need.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="icon-dot"></div>
+                        <p>Guessing who might carry the product you're looking for right now.</p>
+                    </div>
+                </div>
+
+                <div class="solution-box">
+                    <h3>What if finding something nearby was as easy as searching for it?</h3>
+                    <p style="color: var(--text-light);">MSL is being developed to bridge the gap between local merchant inventory and your digital search.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTICIPATION SECTION (STEP 2) -->
+        <section class="participation-section container">
+            <h2>You can help build it.</h2>
+            <p class="intro">MainStreet Local is being developed to create a simpler way to discover what's available at local businesses. The technology is still being built, but the idea starts with the people who would actually use it.</p>
+            <p class="transition">Before we build it, we want to know what you want it to become.</p>
+
+            <form id="feedbackForm" class="feedback-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="search_query">What would you search for?</label>
+                        <input type="text" id="search_query" placeholder="e.g. Metric bolts, locally roasted coffee" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Where do you want it?</label>
+                        <input type="text" id="location" placeholder="e.g. Fullerton, Downtown LA" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shopping_habits">How do you shop locally?</label>
+                        <textarea id="shopping_habits" placeholder="Tell us about your local shopping routine..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="improvements">What would make it easier?</label>
+                        <textarea id="improvements" placeholder="Any features or ideas you'd love to see?" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label for="email">Stay Updated (Optional Email)</label>
+                    <input type="email" id="email" placeholder="email@example.com">
+                </div>
+
+                <div class="form-footer">
+                    <div id="formMessage" class="message"></div>
+                    <button type="submit" id="submitBtn" class="btn-submit">Submit Feedback</button>
+                </div>
+            </form>
+
+            <div class="closing-statement">
+                <p>The technology comes next. The idea starts with you.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <a href="#" class="footer-logo">An Initiative of Thompson Foundry Innovations</a>
+    </footer>
+
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://zhizypgnhjuipubjtxud.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const feedbackForm = document.getElementById('feedbackForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formMessage = document.getElementById('formMessage');
+
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Basic validation
+            if (!feedbackForm.checkValidity()) {
+                feedbackForm.reportValidity();
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting...';
+            formMessage.style.display = 'none';
+
+            const formData = {
+                search_query: document.getElementById('search_query').value,
+                location: document.getElementById('location').value,
+                shopping_habits: document.getElementById('shopping_habits').value,
+                improvements: document.getElementById('improvements').value,
+                email: document.getElementById('email').value || null
+            };
+
+            try {
+                const { error } = await supabaseClient
+                    .from('user_feedback')
+                    .insert([formData]);
+
+                if (error) throw error;
+
+                // Success state
+                formMessage.innerText = "Thank you! Your feedback has been received.";
+                formMessage.className = 'message success';
+                formMessage.style.display = 'block';
+                feedbackForm.reset();
+                submitBtn.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                formMessage.innerText = "Error: " + (error.message || "Something went wrong. Please try again.");
+                formMessage.className = 'message error';
+                formMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Submit Feedback';
+            }
+        });
+    </script>
+
+</body>
+</html>
