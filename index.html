@@ -26,6 +26,7 @@
             font-family: var(--sans);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
         }
 
         .container {
@@ -50,6 +51,30 @@
             color: var(--primary);
             text-transform: uppercase;
             text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link-secondary {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-link-secondary:hover {
+            color: var(--primary);
+            border-color: var(--border);
+            background: var(--surface);
         }
 
         /* HERO SECTION */
@@ -376,6 +401,60 @@
             letter-spacing: -0.5px;
         }
 
+        /* SUPPORT SECTION */
+        .support-section {
+            background: var(--bg);
+            padding: 5rem 0 8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .support-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .support-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .support-content p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-support {
+            background: var(--text-dark);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--sans);
+        }
+
+        .btn-support:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #9ca3af;
+        }
+
+        .support-content .small {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
         /* FOOTER */
         footer {
             padding: 1.5rem 0;
@@ -432,7 +511,7 @@
                 gap: 3rem;
             }
 
-            .problem-section h2, .participation-section h2 {
+            .problem-section h2, .participation-section h2, .support-section h2 {
                 font-size: 3rem;
                 max-width: 600px;
             }
@@ -451,6 +530,9 @@
 
     <header class="container">
         <a href="#" class="logo">MainStreet Local</a>
+        <nav>
+            <a href="#support" class="nav-link-secondary">Support MSL</a>
+        </nav>
     </header>
 
     <main>
@@ -556,6 +638,24 @@
                 <p>The technology comes next. The idea starts with you.</p>
             </div>
         </section>
+
+        <!-- SUPPORT SECTION -->
+        <section id="support" class="support-section">
+            <div class="container">
+                <span class="section-tagline">Help Build MSL</span>
+                <h2>Help Build MainStreet Local.</h2>
+                <p class="intro">MainStreet Local is an early-stage project being developed to make local businesses and what they have available easier to discover. Building and testing that system requires technology, research, and other resources.</p>
+                
+                <div class="support-box">
+                    <div class="support-content">
+                        <h3>Support MSL</h3>
+                        <p>Your support helps fund the research, development, and testing required to move MSL from concept toward a working system.</p>
+                        <button class="btn-support" disabled>Funding Pathway Opening Soon</button>
+                        <p class="small">Payment processing is currently being configured.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="container">
@@ -620,3 +720,4 @@
 
 </body>
 </html>
+
