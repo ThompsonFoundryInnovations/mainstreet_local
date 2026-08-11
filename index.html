@@ -431,6 +431,7 @@
         }
 
         .btn-support {
+            display: inline-block;
             background: var(--text-dark);
             color: #fff;
             border: none;
@@ -439,20 +440,27 @@
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
             transition: all 0.2s;
             font-family: var(--sans);
         }
 
-        .btn-support:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            background: #9ca3af;
+        .btn-support:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            background: var(--primary);
+        }
+
+        .btn-support:active {
+            transform: translateY(0);
         }
 
         .support-content .small {
             font-size: 0.8rem;
             margin-top: 1rem;
             font-weight: 500;
+            color: var(--text-light);
+            opacity: 0.7;
         }
 
         /* FOOTER */
@@ -531,7 +539,7 @@
     <header class="container">
         <a href="#" class="logo">MainStreet Local</a>
         <nav>
-            <a href="#support" class="nav-link-secondary">Support MSL</a>
+            <a href="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01" target="_blank" class="nav-link-secondary">Support MSL</a>
         </nav>
     </header>
 
@@ -650,8 +658,8 @@
                     <div class="support-content">
                         <h3>Support MSL</h3>
                         <p>Your support helps fund the research, development, and testing required to move MSL from concept toward a working system.</p>
-                        <button class="btn-support" disabled>Funding Pathway Opening Soon</button>
-                        <p class="small">Payment processing is currently being configured.</p>
+                        <a href="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01" target="_blank" class="btn-support">Support MSL Founding Effort</a>
+                        <p class="small">Secure payment processing powered by Stripe.</p>
                     </div>
                 </div>
             </div>
@@ -720,4 +728,3 @@
 
 </body>
 </html>
-
