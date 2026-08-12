@@ -555,9 +555,13 @@
             cursor: pointer;
             transition: all 0.15s;
         }
-        .amount-btn.selected, .amount-btn:hover {
+        .amount-btn:hover {
             border-color: var(--primary);
-            color: var(--primary);
+        }
+        .amount-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
         }
         .amount-other { margin-bottom: 1.5rem; }
         .amount-other label {
@@ -1061,5 +1065,4 @@
     </script>
 </body>
 </html>
-
 
