@@ -10,9 +10,8 @@
     <meta property="og:title" content="MainStreet Local | Find It. Local.">
     <meta property="og:description" content="Making local inventory discoverable. Support the mission to bring the physical shelf into the digital layer.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mainstreet-local.vercel.app/">
-    <!-- Using a placeholder for the social image - would be replaced with a real asset later -->
-    <meta property="og:image" content="https://mainstreet-local.vercel.app/og-image.png">
+    <meta property="og:url" content="https://mainstreetlocal.vercel.app/">
+    <meta property="og:image" content="https://mainstreetlocal.vercel.app/og-image.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -331,8 +330,7 @@
         /* FEEDBACK FORM */
         .feedback-form {
             max-width: 800px;
-            margin: 0 auto 4rem;
-            text-align: left;
+            margin: 0 auto 4rem; text-align: left;
         }
 
         .form-grid {
@@ -581,7 +579,6 @@
                 <button class="btn-find" id="findBtn">Find It</button>
             </div>
 
-            <!-- SEARCH DISCOVERY PREVIEW AREA -->
             <div id="searchResult">
                 <h4 id="resultTitle">Analyzing Discovery Path...</h4>
                 <p id="resultText">That is exactly the kind of product information MSL is designed to make discoverable. Our live inventory network is currently being developed to bridge this gap.</p>
@@ -675,7 +672,7 @@
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.684 10.342L15.316 7M8.684 13.658l6.632 3.342M12 12m-3 0a3 3 0 106 0 3 3 0 10-6 0m-8 7a3 3 0 106 0 3 3 0 10-6 0m13-14a3 3 0 106 0 3 3 0 10-6 0"></path></svg>
                         Share Mission
                     </button>
-                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission: https://mainstreet-local.vercel.app/" target="_blank" class="btn-share">
+                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission: https://mainstreetlocal.vercel.app/" target="_blank" class="btn-share">
                         Post to X
                     </a>
                 </div>
@@ -780,20 +777,15 @@
             question.addEventListener('click', () => {
                 const item = question.parentElement;
                 const isActive = item.classList.contains('active');
-                
-                // Close all other items
                 document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-                
-                if (!isActive) {
-                    item.classList.add('active');
-                }
+                if (!isActive) item.classList.add('active');
             });
         });
 
         // --- SHARING LOGIC ---
         const copyBtn = document.getElementById('copyBtn');
         const nativeShareBtn = document.getElementById('nativeShareBtn');
-        const shareUrl = "https://mainstreet-local.vercel.app/";
+        const shareUrl = "https://mainstreetlocal.vercel.app/";
         const shareText = "I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission.";
 
         copyBtn.addEventListener('click', () => {
@@ -806,11 +798,7 @@
 
         nativeShareBtn.addEventListener('click', () => {
             if (navigator.share) {
-                navigator.share({
-                    title: 'MainStreet Local',
-                    text: shareText,
-                    url: shareUrl,
-                });
+                navigator.share({ title: 'MainStreet Local', text: shareText, url: shareUrl });
             } else {
                 alert("Sharing not supported on this browser. Use the Post to X or Copy Link options!");
             }
@@ -820,17 +808,14 @@
         const SUPABASE_URL = 'https://zhizypgnhjuipubjtxud.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         const feedbackForm = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('submitBtn');
 
         feedbackForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formMessage = document.getElementById('formMessage');
-            
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting...';
-
             const formData = {
                 search_need: document.getElementById('search_query').value,
                 local: document.getElementById('location').value,
@@ -838,19 +823,13 @@
                 desired_features: document.getElementById('improvements').value,
                 email: document.getElementById('email').value || null
             };
-
             try {
-                const { error } = await supabaseClient
-                    .from('user_feedback')
-                    .insert([formData]);
-
+                const { error } = await supabaseClient.from('user_feedback').insert([formData]);
                 if (error) throw error;
-
                 formMessage.innerText = "Thank you! Your feedback has been received.";
                 formMessage.style.color = "var(--accent)";
                 feedbackForm.reset();
                 submitBtn.style.display = 'none';
-
             } catch (error) {
                 console.error('Error submitting feedback:', error);
                 formMessage.innerText = "Error: " + error.message;
@@ -860,6 +839,6 @@
             }
         });
     </script>
-
 </body>
 </html>
+,itemId:Q1ysHL2C94roX8NWpPOK}
