@@ -19,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --primary: #1a4f8b; /* MSL Navy Blue */
+            --primary: #1a4f8b;
             --bg: #ffffff;
             --text-dark: #1a1a1a;
             --text-light: #555555;
@@ -48,56 +48,37 @@
 
         /* NAVIGATION */
         header {
-            padding: 1.5rem 0;
+            padding: 0.5rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--primary);
-            text-transform: uppercase;
-            text-decoration: none;
+        .logo-link {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            text-decoration: none;
         }
 
-        /* Blue visual accent to match the logo icon color */
-        .logo-text::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            border-radius: 2px;
+        .logo-img {
+            height: 80px; /* Large enough to be seen clearly */
+            width: auto;
+            margin: -15px 0; /* Clips white space in the file */
         }
 
         nav {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .nav-link-secondary {
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-light);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .nav-link-secondary:hover {
-            color: var(--primary);
-            border-color: var(--border);
-            background: var(--surface);
         }
 
         /* HERO SECTION */
@@ -131,7 +112,7 @@
         .hero p.support {
             font-size: 1.05rem;
             color: var(--text-light);
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto 3rem;
             opacity: 0.9;
             line-height: 1.6;
@@ -152,7 +133,7 @@
             background: #fff;
             padding: 0.75rem;
             border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             margin: 0 auto;
             border: 1px solid var(--border);
@@ -202,7 +183,6 @@
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.1s, opacity 0.2s;
         }
 
         /* DISCOVERY PREVIEW RESULT */
@@ -306,14 +286,12 @@
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: opacity 0.2s, transform 0.1s;
         }
 
         /* SHARING SECTION */
         .share-section { padding: 4rem 0; background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
         .share-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
-        .btn-share { padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; text-decoration: none; }
-        .btn-share:hover { border-color: var(--primary); background: var(--surface); }
+        .btn-share { padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
 
         /* FAQ SECTION */
         .faq-section { padding: 5rem 0; border-top: 1px solid var(--border); }
@@ -326,8 +304,7 @@
         /* SUPPORT SECTION */
         .support-section { background: var(--bg); padding: 5rem 0 8rem; border-top: 1px solid var(--border); }
         .support-box { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 3rem; margin-top: 3rem; text-align: center; }
-        .btn-support { display: inline-block; background: var(--text-dark); color: #fff; border: none; border-radius: 12px; padding: 1.2rem 3rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-        .btn-support:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); background: var(--primary); }
+        .btn-support { display: inline-block; background: var(--text-dark); color: #fff; border: none; border-radius: 12px; padding: 1.2rem 3rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-decoration: none; }
 
         /* FOOTER */
         footer { padding: 2rem 0; text-align: center; border-top: 1px solid var(--border); }
@@ -338,9 +315,8 @@
             .hero h1 { font-size: 4.5rem; }
             .search-container { flex-direction: row; align-items: center; padding: 0.5rem 0.5rem 0.5rem 1.5rem; height: 80px; gap: 0; }
             .search-group { flex: 1; padding: 0; }
-            .divider { width: 1px; height: 40px; margin: 0 1.5rem; }
+            .divider { width: 1px; height: 40px; margin: 0 1.5rem; border-left: 1px solid var(--border); }
             .btn-find { padding: 0 2.5rem; height: 60px; }
-            .problem-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
             .problem-section h2, .participation-section h2, .support-section h2, .faq-section h2 { font-size: 3rem; max-width: 600px; }
             .form-grid { grid-template-columns: 1fr 1fr; }
             .btn-submit { width: auto; }
@@ -350,7 +326,9 @@
 <body>
 
     <header class="container">
-        <a href="#" class="logo-text">MainStreet Local</a>
+        <a href="#" class="logo-link">
+            <img src="og-image.png" alt="MainStreet Local Logo" class="logo-img">
+        </a>
         <nav>
             <a href="#about" class="nav-link-secondary">About</a>
             <a href="#support" class="nav-link-secondary">Support MSL</a>
@@ -537,4 +515,3 @@
     </script>
 </body>
 </html>
-
