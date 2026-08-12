@@ -17,8 +17,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Stripe Buy Button Script -->
-    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
     
     <style>
         :root {
@@ -57,243 +55,98 @@
             align-items: center;
         }
 
-        .logo-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
+        .logo-link { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 80px; width: auto; margin: -15px 0; }
 
-        .logo-img {
-            height: 80px;
-            width: auto;
-            margin: -15px 0;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
+        nav { display: flex; align-items: center; gap: 1.5rem; }
         .nav-link-secondary {
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-light);
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             cursor: pointer;
             background: none;
             border: none;
             font-family: var(--sans);
         }
 
+        /* CUSTOM MODAL / POPUP SYSTEM */
+        #paymentModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            height: 80vh;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
         /* HERO SECTION */
-        .hero {
-            padding: 3rem 0 5rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin: 0.5rem 0 1rem;
-            color: var(--text-dark);
-            letter-spacing: -1.5px;
-        }
-
-        .hero h1 span {
-            display: block;
-            color: var(--primary);
-        }
-
-        .hero p.lead {
-            font-size: 1.25rem;
-            color: var(--text-light);
-            max-width: 700px;
-            margin: 0 auto 1.5rem;
-            font-weight: 500;
-        }
-
-        .hero p.support {
-            font-size: 1.05rem;
-            color: var(--text-light);
-            max-width: 650px;
-            margin: 0 auto 3rem;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
+        .hero { padding: 3rem 0 5rem; text-align: center; }
+        .hero h1 { font-size: 3rem; font-weight: 700; line-height: 1.1; margin: 0.5rem 0 1rem; color: var(--text-dark); letter-spacing: -1.5px; }
+        .hero h1 span { display: block; color: var(--primary); }
+        .hero p.lead { font-size: 1.25rem; color: var(--text-light); max-width: 700px; margin: 0 auto 1.5rem; font-weight: 500; }
+        .hero p.support { font-size: 1.05rem; color: var(--text-light); max-width: 650px; margin: 0 auto 3rem; opacity: 0.9; line-height: 1.6; }
 
         /* SEARCH INTERFACE */
-        .search-preview-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-
-        .search-container {
-            background: #fff;
-            padding: 0.75rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .search-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            text-align: left;
-            padding: 0.5rem;
-        }
-
-        .search-group label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-light);
-            letter-spacing: 0.5px;
-        }
-
-        .search-input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-input-wrapper input {
-            width: 100%;
-            border: none;
-            font-family: var(--sans);
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            padding: 0.5rem 0;
-            outline: none;
-        }
-
-        .btn-find {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 1.2rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .search-preview-label { font-size: 0.7rem; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem; display: block; }
+        .search-container { background: #fff; padding: 0.75rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); max-width: 800px; margin: 0 auto; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
+        .search-group { display: flex; flex-direction: column; gap: 0.5rem; text-align: left; padding: 0.5rem; }
+        .search-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.5px; }
+        .search-input-wrapper input { width: 100%; border: none; font-family: var(--sans); font-size: 1.1rem; color: var(--text-dark); padding: 0.5rem 0; outline: none; }
+        .btn-find { background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 1.2rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
 
         /* DISCOVERY PREVIEW RESULT */
-        #searchResult {
-            max-width: 800px;
-            margin: 1.5rem auto 0;
-            padding: 2rem;
-            background: var(--surface);
-            border: 1px dashed var(--border);
-            border-radius: 16px;
-            text-align: center;
-            display: none;
-        }
-
+        #searchResult { max-width: 800px; margin: 1.5rem auto 0; padding: 2rem; background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; text-align: center; display: none; }
         #searchResult h4 { color: var(--primary); margin-bottom: 0.75rem; }
         #searchResult p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1.5rem; }
 
-        .btn-secondary {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--text-dark);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
         /* PROBLEM SECTION */
-        .problem-section {
-            background: var(--surface);
-            padding: 5rem 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .section-tagline {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .problem-section h2 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 2rem;
-            line-height: 1.2;
-        }
-
-        .problem-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .problem-item {
-            display: flex; gap: 1rem; align-items: flex-start;
-        }
-
-        .icon-dot {
-            width: 8px; height: 8px; background: var(--primary); border-radius: 50%; margin-top: 0.6rem; flex-shrink: 0;
-        }
-
+        .problem-section { background: var(--surface); padding: 5rem 0; border-top: 1px solid var(--border); }
+        .section-tagline { text-transform: uppercase; font-size: 0.8rem; font-weight: 700; color: var(--primary); letter-spacing: 1px; margin-bottom: 1rem; display: block; }
+        .problem-section h2 { font-size: 2.25rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 2rem; line-height: 1.2; }
+        .problem-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem; }
+        .problem-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .icon-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; margin-top: 0.6rem; flex-shrink: 0; }
         .problem-item p { font-size: 1.1rem; color: var(--text-light); }
-
-        .solution-box {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-        }
+        .solution-box { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-align: center; }
 
         /* PARTICIPATION SECTION */
-        .participation-section {
-            padding: 5rem 0;
-            border-top: 1px solid var(--border);
-        }
-
+        .participation-section { padding: 5rem 0; border-top: 1px solid var(--border); }
         .participation-section h2 { font-size: 2.25rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 1.5rem; }
-
-        /* FEEDBACK FORM */
         .feedback-form { max-width: 800px; margin: 0 auto 4rem; text-align: left; }
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
         .form-group label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-dark); letter-spacing: 0.5px; }
         .form-group input, .form-group textarea { padding: 1rem; border-radius: 10px; border: 1px solid var(--border); font-family: var(--sans); font-size: 1rem; outline: none; transition: border-color 0.2s; }
-
-        .btn-submit {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-        }
+        .btn-submit { background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 1.2rem 3rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%; }
 
         /* SHARING SECTION */
         .share-section { padding: 4rem 0; background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
@@ -312,18 +165,27 @@
         .support-section { background: var(--bg); padding: 5rem 0 8rem; border-top: 1px solid var(--border); }
         .support-box { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 3rem; margin-top: 3rem; text-align: center; }
         
-        /* Custom styling for the Stripe container */
-        .stripe-container {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
+        /* CUSTOM MISSION-DRIVEN SUPPORT BUTTON */
+        .btn-support-mission {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 15px -3px rgba(26, 79, 139, 0.3);
         }
+        .btn-support-mission:hover { transform: translateY(-2px); box-shadow: 0 15px 25px -5px rgba(26, 79, 139, 0.4); filter: brightness(1.1); }
 
-        /* FOOTER */
         footer { padding: 2rem 0; text-align: center; border-top: 1px solid var(--border); }
         .footer-logo { font-size: 0.75rem; font-weight: 500; color: #aaa; text-decoration: none; }
 
-        /* DESKTOP RESPONSIVE */
         @media (min-width: 768px) {
             .hero h1 { font-size: 4.5rem; }
             .search-container { flex-direction: row; align-items: center; padding: 0.5rem 0.5rem 0.5rem 1.5rem; height: 80px; gap: 0; }
@@ -338,19 +200,24 @@
 </head>
 <body>
 
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBtn">&times;</span>
+            <!-- Triggering your specific working Payment Link -->
+            <iframe src="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01"></iframe>
+        </div>
+    </div>
+
     <header class="container">
-        <a href="#" class="logo-link">
-            <img src="og-image.png" alt="MainStreet Local Logo" class="logo-img">
-        </a>
+        <a href="#" class="logo-link"><img src="og-image.png" alt="Logo" class="logo-img"></a>
         <nav>
             <a href="#about" class="nav-link-secondary">About</a>
-            <!-- This triggers the main Support button below -->
-            <button onclick="document.getElementById('support').scrollIntoView({behavior: 'smooth'})" class="nav-link-secondary">Support MSL</button>
+            <button onclick="openPayment()" class="nav-link-secondary">Support MSL</button>
         </nav>
     </header>
 
     <main>
-        <!-- HERO SECTION -->
         <section class="hero container">
             <span class="section-tagline" style="opacity: 0.6;">THE INVISIBLE SHELF MISSION</span>
             <h1>Find It. <span>Local.</span></h1>
@@ -359,39 +226,25 @@
 
             <span class="search-preview-label">DISCOVERY PREVIEW</span>
             <div class="search-container">
-                <div class="search-group">
-                    <label>What are you looking for?</label>
-                    <div class="search-input-wrapper">
-                        <input type="text" id="productSearch" placeholder="Hardware, coffee, work boots...">
-                    </div>
-                </div>
+                <div class="search-group"><label>Looking for?</label><input type="text" id="productSearch" placeholder="Hardware, coffee, work boots..."></div>
                 <div class="divider"></div>
-                <div class="search-group">
-                    <label>Where?</label>
-                    <div class="search-input-wrapper">
-                        <input type="text" value="Near me" readonly>
-                    </div>
-                </div>
+                <div class="search-group"><label>Where?</label><input type="text" value="Near me" readonly></div>
                 <button class="btn-find" id="findBtn">Find It</button>
             </div>
-
             <div id="searchResult">
                 <h4 id="resultTitle">Analyzing Discovery Path...</h4>
-                <p id="resultText">That is exactly the kind of product information MSL is designed to make discoverable. Our live inventory network is currently being developed to bridge this gap.</p>
+                <p>That is exactly the kind of product information MSL is designed to make discoverable. Our live inventory network is currently being developed.</p>
                 <a href="#feedback" class="btn-secondary">Help Us Build It</a>
             </div>
         </section>
 
-        <!-- MISSION SECTION -->
         <section id="about" class="problem-section">
             <div class="container">
                 <span class="section-tagline">The Problem</span>
                 <h2>Finding something nearby shouldn't be this hard.</h2>
                 <div class="problem-grid">
                     <div class="problem-item"><div class="icon-dot"></div><p>Websites often show big-box stock but miss the independent store around the corner.</p></div>
-                    <div class="problem-item"><div class="icon-dot"></div><p>Calling stores to ask "do you have this?" is time-consuming.</p></div>
                     <div class="problem-item"><div class="icon-dot"></div><p>The "Invisible Shelf" means products exist physically but remain digitally dark.</p></div>
-                    <div class="problem-item"><div class="icon-dot"></div><p>Google and Yelp show you where a business is, but not what is inside it.</p></div>
                 </div>
                 <div class="solution-box">
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Making the Invisible, Visible.</h3>
@@ -400,7 +253,19 @@
             </div>
         </section>
 
-        <!-- PARTICIPATION SECTION -->
+        <section id="support" class="support-section">
+            <div class="container">
+                <span class="section-tagline">Founding Supporter</span>
+                <h2>Help Build MainStreet Local.</h2>
+                <div class="support-box">
+                    <h3 style="margin-bottom: 1.5rem;">Join the Effort</h3>
+                    <p style="color: var(--text-light); margin-bottom: 2.5rem;">Support the development and research required to move MSL from concept toward a working system.</p>
+                    <button onclick="openPayment()" class="btn-support-mission">Support MSL Founding Effort ($10)</button>
+                    <p style="font-size: 0.8rem; margin-top: 1.5rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
+                </div>
+            </div>
+        </section>
+
         <section id="feedback" class="participation-section container">
             <span class="section-tagline">Step 1</span>
             <h2>You can help build it.</h2>
@@ -408,138 +273,75 @@
                 <div class="form-grid">
                     <div class="form-group"><label for="search_query">What would you search for?</label><input type="text" id="search_query" required></div>
                     <div class="form-group"><label for="location">Where do you live?</label><input type="text" id="location" required></div>
-                    <div class="form-group"><label for="shopping_habits">How do you shop locally?</label><textarea id="shopping_habits" required></textarea></div>
-                    <div class="form-group"><label for="improvements">What would make it easier?</label><textarea id="improvements" required></textarea></div>
+                    <div class="form-group"><label for="shopping_habits">Local shopping routine?</label><textarea id="shopping_habits" required></textarea></div>
+                    <div class="form-group"><label for="improvements">Feature ideas?</label><textarea id="improvements" required></textarea></div>
                 </div>
-                <div class="form-group" style="margin-bottom: 2rem;"><label for="email">Email (Optional)</label><input type="email" id="email"></div>
-                <div class="form-footer"><div id="formMessage" class="message"></div><button type="submit" id="submitBtn" class="btn-submit">Submit Feedback</button></div>
+                <button type="submit" id="submitBtn" class="btn-submit">Submit Feedback</button>
             </form>
         </section>
 
-        <!-- SHARING SECTION -->
         <section class="share-section">
             <div class="container">
                 <span class="section-tagline">Spread the Word</span>
                 <h2>Share the Mission.</h2>
                 <div class="share-buttons">
                     <button class="btn-share" id="copyBtn">Copy Link</button>
-                    <button class="btn-share" id="nativeShareBtn">Share Mission</button>
-                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission: https://mainstreetlocal.vercel.app/" target="_blank" class="btn-share">Post to X</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ SECTION -->
-        <section class="faq-section">
-            <div class="container">
-                <span class="section-tagline">Common Questions</span>
-                <h2>Everything you need to know.</h2>
-                <div class="faq-grid">
-                    <div class="faq-item"><button class="faq-question">What is MainStreet Local? +</button><div class="faq-answer"><p>MSL is building a unified information layer for the physical local economy to make store shelves searchable online.</p></div></div>
-                    <div class="faq-item"><button class="faq-question">What is the "Invisible Shelf"? +</button><div class="faq-answer"><p>Products that exist in local stores but have no digital representation online.</p></div></div>
-                    <div class="faq-item"><button class="faq-question">How is MSL different from Google? +</button><div class="faq-answer"><p>Google shows where a business is; MSL shows what is inside it.</p></div></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SUPPORT SECTION -->
-        <section id="support" class="support-section">
-            <div class="container">
-                <span class="section-tagline">Help Build MSL</span>
-                <h2>Help Build MainStreet Local.</h2>
-                <div class="support-box">
-                    <h3 style="margin-bottom: 1rem;">Founding Support</h3>
-                    <p style="color: var(--text-light); margin-bottom: 2rem;">Help fund the development of MSL from concept toward a working system.</p>
-                    
-                    <div class="stripe-container">
-                        <!-- THE NATIVE STRIPE BUY BUTTON POPUP -->
-                        <stripe-buy-button
-                            buy-button-id="buy_btn_1U3cRE0Ka6bvPb49F4rRW4CU"
-                            publishable-key="pk_live_51U31N50Ka6bvPb496zxnpKEzpxcs4k9BLHqgK8ZN5KW5bMFCw0A4dig1AQpDQK1Y7yG17KYiGN6lPGuCRhPntNyQ00KZHwIngJ"
-                        >
-                        </stripe-buy-button>
-                    </div>
-                    
-                    <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
+                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local. Check out the mission: https://mainstreetlocal.vercel.app/" target="_blank" class="btn-share">Post to X</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="container">
-        <a href="#" class="footer-logo">An Initiative of Thompson Foundry Innovations</a>
-    </footer>
+    <footer class="container"><a href="#" class="footer-logo">An Initiative of Thompson Foundry Innovations</a></footer>
 
     <script>
-        const findBtn = document.getElementById('findBtn');
-        const productInput = document.getElementById('productSearch');
-        const searchResult = document.getElementById('searchResult');
-        const resultTitle = document.getElementById('resultTitle');
+        const modal = document.getElementById('paymentModal');
+        const closeBtn = document.getElementById('closeBtn');
 
+        function openPayment() { modal.style.display = 'flex'; }
+        closeBtn.onclick = function() { modal.style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = 'none'; } }
+
+        const findBtn = document.getElementById('findBtn');
+        const searchResult = document.getElementById('searchResult');
         findBtn.addEventListener('click', () => {
-            const query = productInput.value.trim();
+            const query = document.getElementById('productSearch').value.trim();
             if (query.length < 2) return;
-            resultTitle.innerText = `Searching for "${query}"...`;
+            document.getElementById('resultTitle').innerText = `Searching for "${query}"...`;
             searchResult.style.display = 'block';
             searchResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                const isActive = item.classList.contains('active');
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-                if (!isActive) item.classList.add('active');
-            });
-        });
-
         const copyBtn = document.getElementById('copyBtn');
-        const nativeShareBtn = document.getElementById('nativeShareBtn');
-        const shareUrl = "https://mainstreetlocal.vercel.app/";
-        const shareText = "I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission.";
-
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                const originalText = copyBtn.innerHTML;
+            navigator.clipboard.writeText("https://mainstreetlocal.vercel.app/").then(() => {
                 copyBtn.innerText = "Link Copied!";
-                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+                setTimeout(() => { copyBtn.innerText = "Copy Link"; }, 2000);
             });
-        });
-
-        nativeShareBtn.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({ title: 'MainStreet Local', text: shareText, url: shareUrl });
-            }
         });
 
         const SUPABASE_URL = 'https://zhizypgnhjuipubjtxud.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const feedbackForm = document.getElementById('feedbackForm');
-        const submitBtn = document.getElementById('submitBtn');
 
         feedbackForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Submitting...';
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.innerText = 'Submitting...';
             const formData = {
                 search_need: document.getElementById('search_query').value,
                 local: document.getElementById('location').value,
                 shopping_habit: document.getElementById('shopping_habits').value,
-                desired_features: document.getElementById('improvements').value,
-                email: document.getElementById('email').value || null
+                desired_features: document.getElementById('improvements').value
             };
             try {
                 const { error } = await supabaseClient.from('user_feedback').insert([formData]);
                 if (error) throw error;
-                document.getElementById('formMessage').innerText = "Thank you! Your feedback has been received.";
-                feedbackForm.reset();
-                submitBtn.style.display = 'none';
+                btn.innerText = "Thank you! Received.";
             } catch (error) {
-                console.error('Error submitting feedback:', error);
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Submit Feedback';
+                console.error(error);
+                btn.disabled = false; btn.innerText = 'Submit Feedback';
             }
         });
     </script>
