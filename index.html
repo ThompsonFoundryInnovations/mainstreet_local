@@ -17,13 +17,12 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Stripe.js required for Embedded Checkout -->
     <script src="https://js.stripe.com/v3/"></script>
     
     <style>
         :root {
-            --primary: #1a4f8b; /* Deep trustworthy blue */
-            --accent: #27ae60; /* Approachable green */
+            --primary: #1a4f8b;
+            --accent: #27ae60;
             --bg: #ffffff;
             --text-dark: #1a1a1a;
             --text-light: #555555;
@@ -50,7 +49,6 @@
             padding: 0 1.5rem;
         }
 
-        /* NAVIGATION */
         header {
             padding: 1.25rem 0;
             display: flex;
@@ -96,7 +94,6 @@
             background: var(--surface);
         }
 
-        /* HERO SECTION */
         .hero {
             padding: 3rem 0 5rem;
             text-align: center;
@@ -133,7 +130,6 @@
             line-height: 1.6;
         }
 
-        /* SEARCH INTERFACE */
         .search-preview-label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -216,7 +212,6 @@
             transform: scale(0.98);
         }
 
-        /* DISCOVERY PREVIEW RESULT */
         #searchResult {
             max-width: 800px;
             margin: 1.5rem auto 0;
@@ -256,7 +251,6 @@
             font-size: 0.9rem;
         }
 
-        /* PROBLEM SECTION */
         .problem-section {
             background: var(--surface);
             padding: 5rem 0;
@@ -316,7 +310,6 @@
             text-align: center;
         }
 
-        /* PARTICIPATION SECTION */
         .participation-section {
             padding: 5rem 0;
             border-top: 1px solid var(--border);
@@ -336,7 +329,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* FEEDBACK FORM */
         .feedback-form {
             max-width: 800px;
             margin: 0 auto 4rem; text-align: left;
@@ -386,7 +378,6 @@
             transition: opacity 0.2s, transform 0.1s;
         }
 
-        /* SHARING SECTION */
         .share-section {
             padding: 4rem 0;
             background: var(--surface);
@@ -422,7 +413,6 @@
             background: var(--surface);
         }
 
-        /* FAQ SECTION */
         .faq-section {
             padding: 5rem 0;
             border-top: 1px solid var(--border);
@@ -475,7 +465,6 @@
             transform: rotate(45deg);
         }
 
-        /* SUPPORT SECTION */
         .support-section {
             background: var(--bg);
             padding: 5rem 0 8rem;
@@ -489,7 +478,6 @@
             padding: 3rem;
             margin-top: 3rem;
             text-align: center;
-            min-height: 300px;
         }
 
         .btn-support {
@@ -511,19 +499,6 @@
             background: var(--primary);
         }
 
-        /* EMBEDDED CHECKOUT STYLES */
-        #checkout {
-            display: none;
-            margin-top: 2rem;
-        }
-
-        #checkout-success {
-            display: none;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        /* FOOTER */
         footer {
             padding: 2rem 0;
             text-align: center;
@@ -537,7 +512,69 @@
             text-decoration: none;
         }
 
-        /* DESKTOP RESPONSIVE */
+        /* SUPPORT MODAL */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center; justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer;
+            color: var(--text-light);
+            line-height: 1;
+        }
+        .amount-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem; margin-bottom: 1.25rem;
+        }
+        .amount-btn {
+            padding: 0.9rem 0.5rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: #fff;
+            font-weight: 700;
+            font-family: var(--sans);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .amount-btn.selected, .amount-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .amount-other { margin-bottom: 1.5rem; }
+        .amount-other label {
+            display: block; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        .amount-other input {
+            width: 100%; padding: 0.9rem;
+            border-radius: 10px; border: 1px solid var(--border);
+            font-family: var(--sans); font-size: 1rem;
+        }
+        .amount-error {
+            color: #c0392b; font-size: 0.85rem;
+            margin-top: 0.75rem; min-height: 1.2em;
+        }
+
         @media (min-width: 768px) {
             .hero h1 { font-size: 4.5rem; }
             .hero p.lead { font-size: 1.5rem; }
@@ -761,20 +798,10 @@
                 <span class="section-tagline">Help Build MSL</span>
                 <h2>Help Build MainStreet Local.</h2>
                 <div class="support-box">
-                    <div id="support-content">
-                        <h3 style="margin-bottom: 1rem;">Founding Support</h3>
-                        <p style="color: var(--text-light); margin-bottom: 2rem;">Your support helps fund the development and testing required to move MSL from concept toward a working system.</p>
-                        <button id="checkout-button" class="btn-support">Support MSL Founding Effort ($10)</button>
-                        <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
-                    </div>
-                    <!-- STRIPE EMBEDDED CHECKOUT MOUNT POINT -->
-                    <div id="checkout"></div>
-                    <!-- SUCCESS STATE -->
-                    <div id="checkout-success">
-                        <h3 style="color: var(--primary);">Thank you for your support!</h3>
-                        <p style="margin-top: 1rem;">Your contribution helps bring the Invisible Shelf to life.</p>
-                        <button onclick="location.reload()" class="btn-share" style="margin-top: 2rem; padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); font-weight: 600; cursor: pointer;">Back to site</button>
-                    </div>
+                    <h3 style="margin-bottom: 1rem;">Founding Support</h3>
+                    <p style="color: var(--text-light); margin-bottom: 2rem;">Your support helps fund the development and testing required to move MSL from concept toward a working system.</p>
+                    <button id="openSupportModal" class="btn-support">Support</button>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
                 </div>
             </div>
         </section>
@@ -783,6 +810,42 @@
     <footer class="container">
         <a href="#" class="footer-logo">An Initiative of Thompson Foundry Innovations</a>
     </footer>
+
+    <!-- SUPPORT MODAL -->
+    <div id="supportModalOverlay" class="modal-overlay">
+      <div class="modal-box">
+        <button id="closeSupportModal" class="modal-close">&times;</button>
+
+        <div id="amountStep">
+          <h3 style="margin-bottom: 0.5rem;">Choose your contribution</h3>
+          <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem;">Help fund MSL's development.</p>
+          <div class="amount-grid">
+            <button class="amount-btn" data-amount="500">$5</button>
+            <button class="amount-btn" data-amount="1000">$10</button>
+            <button class="amount-btn" data-amount="2500">$25</button>
+            <button class="amount-btn" data-amount="5000">$50</button>
+          </div>
+          <div class="amount-other">
+            <label for="otherAmount">Or enter another amount</label>
+            <input type="number" id="otherAmount" min="1" step="1" placeholder="$">
+          </div>
+          <button id="continueToPayment" class="btn-support" style="width:100%;">Continue</button>
+          <div id="amountError" class="amount-error"></div>
+        </div>
+
+        <div id="paymentStep" style="display:none;">
+          <h3 style="margin-bottom: 1rem;">Complete your support</h3>
+          <div id="payment-element"></div>
+          <button id="submitPayment" class="btn-support" style="width:100%; margin-top:1.5rem;">Pay</button>
+          <div id="paymentMessage" class="amount-error"></div>
+        </div>
+
+        <div id="thankYouStep" style="display:none; text-align:center;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem;">Thank you for your support!</h3>
+          <p style="color: var(--text-light);">Your contribution helps bring the Invisible Shelf to life.</p>
+        </div>
+      </div>
+    </div>
 
     <script>
         // --- SEARCH DISCOVERY PREVIEW LOGIC ---
@@ -836,7 +899,6 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Feedback form logic
         const feedbackForm = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('submitBtn');
 
@@ -875,53 +937,129 @@
             }
         });
 
-        // --- STRIPE EMBEDDED CHECKOUT LOGIC ---
+        // --- STRIPE SUPPORT MODAL LOGIC ---
         const stripe = Stripe('pk_live_51U31N50Ka6bvPb496zxnpKEzpxcs4k9BLHqgK8ZN5KW5bMFCw0A4dig1AQpDQK1Y7yG17KYiGN6lPGuCRhPntNyQ00KZHwIngJ');
 
-        const checkoutButton = document.getElementById('checkout-button');
-        const supportContent = document.getElementById('support-content');
-        const checkoutDiv = document.getElementById('checkout');
-        const successDiv = document.getElementById('checkout-success');
+        let elements, selectedAmount = null;
 
-        // Check if we are returning from a successful payment
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session_id');
-        if (sessionId) {
-            supportContent.style.display = 'none';
-            successDiv.style.display = 'block';
-            window.history.replaceState({}, document.title, "/");
+        const overlay = document.getElementById('supportModalOverlay');
+        const amountStep = document.getElementById('amountStep');
+        const paymentStep = document.getElementById('paymentStep');
+        const thankYouStep = document.getElementById('thankYouStep');
+
+        document.getElementById('openSupportModal').addEventListener('click', () => {
+            overlay.classList.add('active');
+        });
+
+        document.getElementById('closeSupportModal').addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            resetModal();
         }
 
-        checkoutButton.addEventListener('click', async () => {
-            checkoutButton.disabled = true;
-            checkoutButton.innerText = 'Loading Checkout...';
+        function resetModal() {
+            selectedAmount = null;
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('otherAmount').value = '';
+            amountStep.style.display = 'block';
+            paymentStep.style.display = 'none';
+            thankYouStep.style.display = 'none';
+            document.getElementById('payment-element').innerHTML = '';
+            document.getElementById('amountError').innerText = '';
+            document.getElementById('paymentMessage').innerText = '';
+        }
+
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedAmount = parseInt(btn.dataset.amount, 10);
+                document.getElementById('otherAmount').value = '';
+            });
+        });
+
+        document.getElementById('otherAmount').addEventListener('input', (e) => {
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            const dollars = parseFloat(e.target.value);
+            selectedAmount = dollars > 0 ? Math.round(dollars * 100) : null;
+        });
+
+        document.getElementById('continueToPayment').addEventListener('click', async () => {
+            const errorEl = document.getElementById('amountError');
+            errorEl.innerText = '';
+
+            if (!selectedAmount || selectedAmount < 50) {
+                errorEl.innerText = 'Please choose or enter an amount of at least $0.50.';
+                return;
+            }
+
+            const continueBtn = document.getElementById('continueToPayment');
+            continueBtn.disabled = true;
+            continueBtn.innerText = 'Loading...';
 
             try {
-                const response = await fetch('https://zhizypgnhjuipubjtxud.supabase.co/functions/v1/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY
+                const response = await fetch(
+                    'https://zhizypgnhjuipubjtxud.supabase.co/functions/v1/create-payment-intent',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+                        body: JSON.stringify({ amount: selectedAmount }),
                     }
-                });
-
+                );
                 const { clientSecret, error } = await response.json();
                 if (error) throw new Error(error);
 
-                const checkout = await stripe.initEmbeddedCheckout({ clientSecret });
-                
-                supportContent.style.display = 'none';
-                checkoutDiv.style.display = 'block';
-                checkout.mount('#checkout');
+                elements = stripe.elements({ clientSecret, appearance: { theme: 'stripe' } });
+                const paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
 
+                amountStep.style.display = 'none';
+                paymentStep.style.display = 'block';
             } catch (err) {
-                console.error('Checkout error:', err);
-                alert('Unable to load checkout. Please try again later.');
-                checkoutButton.disabled = false;
-                checkoutButton.innerText = 'Support MSL Founding Effort ($10)';
+                errorEl.innerText = 'Something went wrong. Please try again.';
+                console.error(err);
+            } finally {
+                continueBtn.disabled = false;
+                continueBtn.innerText = 'Continue';
             }
         });
+
+        document.getElementById('submitPayment').addEventListener('click', async () => {
+            const msgEl = document.getElementById('paymentMessage');
+            msgEl.innerText = '';
+            const payBtn = document.getElementById('submitPayment');
+            payBtn.disabled = true;
+            payBtn.innerText = 'Processing...';
+
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: { return_url: window.location.href },
+                redirect: 'if_required',
+            });
+
+            if (error) {
+                msgEl.innerText = error.message;
+                payBtn.disabled = false;
+                payBtn.innerText = 'Pay';
+            } else {
+                paymentStep.style.display = 'none';
+                thankYouStep.style.display = 'block';
+            }
+        });
+
+        // Handle returning from a redirect-based payment method (e.g. some banks)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('redirect_status') === 'succeeded') {
+            overlay.classList.add('active');
+            amountStep.style.display = 'none';
+            paymentStep.style.display = 'none';
+            thankYouStep.style.display = 'block';
+            window.history.replaceState({}, document.title, "/");
+        }
     </script>
 </body>
 </html>
+
 
