@@ -838,7 +838,8 @@
         </div>
 
         <div id="paymentStep" style="display:none;">
-          <h3 style="margin-bottom: 1rem;">Complete your support</h3>
+          <h3 style="margin-bottom: 0.25rem;">Complete your support</h3>
+          <p id="paymentSummary" style="color: var(--primary); font-weight: 700; font-size: 1.1rem; margin-bottom: 1.25rem;"></p>
           <div id="payment-element"></div>
           <button id="submitPayment" class="btn-support" style="width:100%; margin-top:1.5rem;">Pay</button>
           <div id="paymentMessage" class="amount-error"></div>
@@ -1019,6 +1020,9 @@
                 const paymentElement = elements.create('payment');
                 paymentElement.mount('#payment-element');
 
+                document.getElementById('paymentSummary').innerText =
+                    '$' + (selectedAmount / 100).toFixed(2) + ' — Support MSL';
+
                 amountStep.style.display = 'none';
                 paymentStep.style.display = 'block';
             } catch (err) {
@@ -1065,4 +1069,3 @@
     </script>
 </body>
 </html>
-
