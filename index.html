@@ -17,7 +17,9 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+    <!-- Official Stripe Script -->
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
     <style>
         :root {
             --primary: #1a4f8b;
@@ -65,48 +67,9 @@
             color: var(--text-light);
             text-decoration: none;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            background: none;
-            border: none;
-            font-family: var(--sans);
         }
-
-        /* CUSTOM MODAL / POPUP SYSTEM */
-        #paymentModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 500px;
-            height: 80vh;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-light);
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        iframe { width: 100%; height: 100%; border: none; }
 
         /* HERO SECTION */
         .hero { padding: 3rem 0 5rem; text-align: center; }
@@ -148,11 +111,6 @@
         .form-group input, .form-group textarea { padding: 1rem; border-radius: 10px; border: 1px solid var(--border); font-family: var(--sans); font-size: 1rem; outline: none; transition: border-color 0.2s; }
         .btn-submit { background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 1.2rem 3rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%; }
 
-        /* SHARING SECTION */
-        .share-section { padding: 4rem 0; background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
-        .share-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
-        .btn-share { padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-
         /* FAQ SECTION */
         .faq-section { padding: 5rem 0; border-top: 1px solid var(--border); }
         .faq-grid { max-width: 800px; margin: 3rem auto 0; }
@@ -161,27 +119,10 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: var(--text-light); font-size: 1rem; line-height: 1.6; }
         .faq-item.active .faq-answer { max-height: 400px; margin-bottom: 1.5rem; }
 
-        /* SUPPORT SECTION */
+        /* SUPPORT SECTION (Help Build MainStreet Local) */
         .support-section { background: var(--bg); padding: 5rem 0 8rem; border-top: 1px solid var(--border); }
         .support-box { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 3rem; margin-top: 3rem; text-align: center; }
-        
-        /* CUSTOM MISSION-DRIVEN SUPPORT BUTTON */
-        .btn-support-mission {
-            display: inline-block;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 15px -3px rgba(26, 79, 139, 0.3);
-        }
-        .btn-support-mission:hover { transform: translateY(-2px); box-shadow: 0 15px 25px -5px rgba(26, 79, 139, 0.4); filter: brightness(1.1); }
+        .stripe-container { margin-top: 2.5rem; display: flex; justify-content: center; }
 
         footer { padding: 2rem 0; text-align: center; border-top: 1px solid var(--border); }
         .footer-logo { font-size: 0.75rem; font-weight: 500; color: #aaa; text-decoration: none; }
@@ -200,20 +141,11 @@
 </head>
 <body>
 
-    <!-- PAYMENT MODAL -->
-    <div id="paymentModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeBtn">&times;</span>
-            <!-- Triggering your specific working Payment Link -->
-            <iframe src="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01"></iframe>
-        </div>
-    </div>
-
     <header class="container">
         <a href="#" class="logo-link"><img src="og-image.png" alt="Logo" class="logo-img"></a>
         <nav>
             <a href="#about" class="nav-link-secondary">About</a>
-            <button onclick="openPayment()" class="nav-link-secondary">Support MSL</button>
+            <a href="#support" class="nav-link-secondary">Support MSL</a>
         </nav>
     </header>
 
@@ -244,24 +176,13 @@
                 <h2>Finding something nearby shouldn't be this hard.</h2>
                 <div class="problem-grid">
                     <div class="problem-item"><div class="icon-dot"></div><p>Websites often show big-box stock but miss the independent store around the corner.</p></div>
+                    <div class="problem-item"><div class="icon-dot"></div><p>Calling stores to ask "do you have this?" is time-consuming.</p></div>
                     <div class="problem-item"><div class="icon-dot"></div><p>The "Invisible Shelf" means products exist physically but remain digitally dark.</p></div>
+                    <div class="problem-item"><div class="icon-dot"></div><p>Google and Yelp show you where a business is, but not what is actually inside it.</p></div>
                 </div>
                 <div class="solution-box">
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Making the Invisible, Visible.</h3>
                     <p style="color: var(--text-light);">MSL is building the "Universal Translator" between physical inventory and digital search results.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="support" class="support-section">
-            <div class="container">
-                <span class="section-tagline">Founding Supporter</span>
-                <h2>Help Build MainStreet Local.</h2>
-                <div class="support-box">
-                    <h3 style="margin-bottom: 1.5rem;">Join the Effort</h3>
-                    <p style="color: var(--text-light); margin-bottom: 2.5rem;">Support the development and research required to move MSL from concept toward a working system.</p>
-                    <button onclick="openPayment()" class="btn-support-mission">Support MSL Founding Effort ($10)</button>
-                    <p style="font-size: 0.8rem; margin-top: 1.5rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
                 </div>
             </div>
         </section>
@@ -280,13 +201,48 @@
             </form>
         </section>
 
-        <section class="share-section">
+        <section class="share-section" style="padding: 4rem 0; border-top: 1px solid var(--border); text-align: center;">
             <div class="container">
                 <span class="section-tagline">Spread the Word</span>
                 <h2>Share the Mission.</h2>
-                <div class="share-buttons">
-                    <button class="btn-share" id="copyBtn">Copy Link</button>
-                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local. Check out the mission: https://mainstreetlocal.vercel.app/" target="_blank" class="btn-share">Post to X</a>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+                    <button id="copyBtn" style="padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; cursor: pointer;">Copy Link</button>
+                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local. Check out the mission: https://mainstreetlocal.vercel.app/" target="_blank" style="padding: 0.8rem 1.5rem; border-radius: 10px; border: 1px solid var(--border); background: #fff; text-decoration: none; color: black; font-weight: 600;">Post to X</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="container">
+                <span class="section-tagline">Common Questions</span>
+                <h2>Everything you need to know.</h2>
+                <div class="faq-grid">
+                    <div class="faq-item"><button class="faq-question">What is MainStreet Local? <span class="faq-icon">+</span></button><div class="faq-answer"><p>MSL is building a unified information layer for the physical local economy to make store shelves searchable online.</p></div></div>
+                    <div class="faq-item"><button class="faq-question">What is the "Invisible Shelf"? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Products that exist in local stores but have no digital representation online.</p></div></div>
+                    <div class="faq-item"><button class="faq-question">How is MSL different from Google? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Google shows where a business is; MSL shows what is inside it.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE CORRECT SUPPORT SECTION -->
+        <section id="support" class="support-section">
+            <div class="container">
+                <span class="section-tagline">Help Build MSL</span>
+                <h2>Help Build MainStreet Local.</h2>
+                <div class="support-box">
+                    <h3 style="margin-bottom: 1.5rem;">Join the Effort</h3>
+                    <p style="color: var(--text-light); margin-bottom: 2rem;">Support the development and research required to move MSL from concept toward a working system.</p>
+                    
+                    <div class="stripe-container">
+                        <!-- OFFICIAL STRIPE BUTTON -->
+                        <stripe-buy-button
+                            buy-button-id="buy_btn_1U3cRE0Ka6bvPb49F4rRW4CU"
+                            publishable-key="pk_live_51U31N50Ka6bvPb496zxnpKEzpxcs4k9BLHqgK8ZN5KW5bMFCw0A4dig1AQpDQK1Y7yG17KYiGN6lPGuCRhPntNyQ00KZHwIngJ"
+                        >
+                        </stripe-buy-button>
+                    </div>
+
+                    <p style="font-size: 0.8rem; margin-top: 1.5rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
                 </div>
             </div>
         </section>
@@ -295,12 +251,15 @@
     <footer class="container"><a href="#" class="footer-logo">An Initiative of Thompson Foundry Innovations</a></footer>
 
     <script>
-        const modal = document.getElementById('paymentModal');
-        const closeBtn = document.getElementById('closeBtn');
-
-        function openPayment() { modal.style.display = 'flex'; }
-        closeBtn.onclick = function() { modal.style.display = 'none'; }
-        window.onclick = function(event) { if (event.target == modal) { modal.style.display = 'none'; } }
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
 
         const findBtn = document.getElementById('findBtn');
         const searchResult = document.getElementById('searchResult');
@@ -324,7 +283,6 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const feedbackForm = document.getElementById('feedbackForm');
-
         feedbackForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -347,3 +305,4 @@
     </script>
 </body>
 </html>
+
