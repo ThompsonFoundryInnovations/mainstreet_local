@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MainStreet Local | Find It. Local.</title>
+    
+    <!-- SEO & Social Sharing (Open Graph) -->
+    <meta name="description" content="MainStreet Local is building a new way to make products available at local businesses easier to discover online. Help us solve the 'Invisible Shelf' problem.">
+    <meta property="og:title" content="MainStreet Local | Find It. Local.">
+    <meta property="og:description" content="Making local inventory discoverable. Support the mission to bring the physical shelf into the digital layer.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mainstreet-local.vercel.app/">
+    <!-- Using a placeholder for the social image - would be replaced with a real asset later -->
+    <meta property="og:image" content="https://mainstreet-local.vercel.app/og-image.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -56,6 +66,7 @@
         nav {
             display: flex;
             align-items: center;
+            gap: 1rem;
         }
 
         .nav-link-secondary {
@@ -87,7 +98,7 @@
             font-size: 3rem;
             font-weight: 700;
             line-height: 1.1;
-            margin: 0.5rem 0 1.5rem;
+            margin: 0.5rem 0 1rem;
             color: var(--text-dark);
             letter-spacing: -1.5px;
         }
@@ -100,20 +111,21 @@
         .hero p.lead {
             font-size: 1.25rem;
             color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 0.5rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
             font-weight: 500;
         }
 
         .hero p.support {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-light);
-            max-width: 550px;
+            max-width: 600px;
             margin: 0 auto 3rem;
-            opacity: 0.8;
+            opacity: 0.9;
+            line-height: 1.6;
         }
 
-        /* SEARCH INTERFACE MOCKUP */
+        /* SEARCH INTERFACE */
         .search-preview-label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -196,6 +208,46 @@
             transform: scale(0.98);
         }
 
+        /* DISCOVERY PREVIEW RESULT */
+        #searchResult {
+            max-width: 800px;
+            margin: 1.5rem auto 0;
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #searchResult h4 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        #searchResult p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--text-dark);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         /* PROBLEM SECTION */
         .problem-section {
             background: var(--surface);
@@ -256,12 +308,7 @@
             text-align: center;
         }
 
-        .solution-box h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* PARTICIPATION SECTION (STEP 2) */
+        /* PARTICIPATION SECTION */
         .participation-section {
             padding: 5rem 0;
             border-top: 1px solid var(--border);
@@ -279,13 +326,6 @@
             color: var(--text-light);
             max-width: 700px;
             margin-bottom: 1.5rem;
-        }
-
-        .participation-section p.transition {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 3rem;
         }
 
         /* FEEDBACK FORM */
@@ -326,22 +366,6 @@
             transition: border-color 0.2s;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-footer {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
         .btn-submit {
             background: var(--primary);
             color: #fff;
@@ -353,52 +377,95 @@
             cursor: pointer;
             width: 100%;
             transition: opacity 0.2s, transform 0.1s;
-            font-family: var(--sans);
         }
 
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-submit:active:not(:disabled) {
-            transform: scale(0.98);
-        }
-
-        .message {
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            display: none;
-            width: 100%;
-            text-align: center;
-        }
-
-        .message.success {
-            background: #dcfce7;
-            color: #166534;
-            display: block;
-        }
-
-        .message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            display: block;
-        }
-
-        .closing-statement {
-            text-align: center;
-            padding: 2rem;
+        /* SHARING SECTION */
+        .share-section {
+            padding: 4rem 0;
             background: var(--surface);
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            text-align: center;
         }
 
-        .closing-statement p {
-            font-size: 1.2rem;
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-share {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-share:hover {
+            border-color: var(--primary);
+            background: var(--surface);
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            padding: 5rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: var(--sans);
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-dark);
-            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
         }
 
         /* SUPPORT SECTION */
@@ -417,19 +484,6 @@
             text-align: center;
         }
 
-        .support-content h3 {
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-        }
-
-        .support-content p {
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            font-size: 1.1rem;
-        }
-
         .btn-support {
             display: inline-block;
             background: var(--text-dark);
@@ -442,7 +496,6 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s;
-            font-family: var(--sans);
         }
 
         .btn-support:hover {
@@ -451,45 +504,24 @@
             background: var(--primary);
         }
 
-        .btn-support:active {
-            transform: translateY(0);
-        }
-
-        .support-content .small {
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            font-weight: 500;
-            color: var(--text-light);
-            opacity: 0.7;
-        }
-
         /* FOOTER */
         footer {
-            padding: 1.5rem 0;
+            padding: 2rem 0;
             text-align: center;
             border-top: 1px solid var(--border);
         }
 
         .footer-logo {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 500;
             color: #aaa;
-            letter-spacing: normal;
             text-decoration: none;
         }
 
         /* DESKTOP RESPONSIVE */
         @media (min-width: 768px) {
-            .hero {
-                padding: 6rem 0 8rem;
-            }
-            .hero h1 {
-                font-size: 4.5rem;
-            }
-            .hero p.lead {
-                font-size: 1.5rem;
-            }
-
+            .hero h1 { font-size: 4.5rem; }
+            .hero p.lead { font-size: 1.5rem; }
             .search-container {
                 flex-direction: row;
                 align-items: center;
@@ -497,40 +529,16 @@
                 height: 80px;
                 gap: 0;
             }
-
-            .search-group {
-                flex: 1;
-                padding: 0;
-            }
-
-            .divider {
-                width: 1px;
-                height: 40px;
-                margin: 0 1.5rem;
-            }
-
-            .btn-find {
-                padding: 0 2.5rem;
-                height: 60px;
-            }
-
-            .problem-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem;
-            }
-
-            .problem-section h2, .participation-section h2, .support-section h2 {
+            .search-group { flex: 1; padding: 0; }
+            .divider { width: 1px; height: 40px; margin: 0 1.5rem; }
+            .btn-find { padding: 0 2.5rem; height: 60px; }
+            .problem-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+            .problem-section h2, .participation-section h2, .support-section h2, .faq-section h2 {
                 font-size: 3rem;
                 max-width: 600px;
             }
-
-            .form-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .btn-submit {
-                width: auto;
-            }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .btn-submit { width: auto; }
         }
     </style>
 </head>
@@ -539,24 +547,25 @@
     <header class="container">
         <a href="#" class="logo">MainStreet Local</a>
         <nav>
-            <a href="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01" target="_blank" class="nav-link-secondary">Support MSL</a>
+            <a href="#about" class="nav-link-secondary">About</a>
+            <a href="#support" class="nav-link-secondary">Support MSL</a>
         </nav>
     </header>
 
     <main>
         <!-- HERO SECTION -->
         <section class="hero container">
-            <span class="section-tagline" style="opacity: 0.6;">WE'RE BUILDING IT</span>
+            <span class="section-tagline" style="opacity: 0.6;">THE INVISIBLE SHELF MISSION</span>
             <h1>Find It. <span>Local.</span></h1>
-            <p class="lead">Need something? Find it nearby.</p>
-            <p class="support">Imagine searching once and seeing what's available at local businesses near you.</p>
+            <p class="lead">Local businesses have products on their shelves that aren't discoverable online.</p>
+            <p class="support">MainStreet Local is building the missing information layer to make that real-world inventory easy to find. Not a new search engine—a way to make search actually work for local merchants.</p>
 
-            <span class="search-preview-label">IMAGINE THIS.</span>
+            <span class="search-preview-label">DISCOVERY PREVIEW</span>
             <div class="search-container">
                 <div class="search-group">
                     <label>What are you looking for?</label>
                     <div class="search-input-wrapper">
-                        <input type="text" placeholder="Hardware, coffee, dry cleaning...">
+                        <input type="text" id="productSearch" placeholder="Hardware, coffee, work boots...">
                     </div>
                 </div>
 
@@ -565,51 +574,58 @@
                 <div class="search-group">
                     <label>Where?</label>
                     <div class="search-input-wrapper">
-                        <input type="text" value="Near me">
+                        <input type="text" value="Near me" readonly>
                     </div>
                 </div>
 
-                <button class="btn-find">Find It</button>
+                <button class="btn-find" id="findBtn">Find It</button>
+            </div>
+
+            <!-- SEARCH DISCOVERY PREVIEW AREA -->
+            <div id="searchResult">
+                <h4 id="resultTitle">Analyzing Discovery Path...</h4>
+                <p id="resultText">That is exactly the kind of product information MSL is designed to make discoverable. Our live inventory network is currently being developed to bridge this gap.</p>
+                <a href="#feedback" class="btn-secondary">Help Us Build It</a>
             </div>
         </section>
 
-        <!-- PROBLEM SECTION -->
-        <section class="problem-section">
+        <!-- MISSION SECTION -->
+        <section id="about" class="problem-section">
             <div class="container">
-                <span class="section-tagline">The Mission</span>
-                <h2>Finding something shouldn't be this hard.</h2>
+                <span class="section-tagline">The Problem</span>
+                <h2>Finding something nearby shouldn't be this hard.</h2>
                 
                 <div class="problem-grid">
                     <div class="problem-item">
                         <div class="icon-dot"></div>
-                        <p>Searching multiple websites that don't always show local stock.</p>
+                        <p>Websites often show big-box stock but miss the independent store around the corner.</p>
                     </div>
                     <div class="problem-item">
                         <div class="icon-dot"></div>
-                        <p>Calling different stores to see if they have a specific item on the shelf.</p>
+                        <p>Calling stores to ask "do you have this?" is time-consuming for you and the merchant.</p>
                     </div>
                     <div class="problem-item">
                         <div class="icon-dot"></div>
-                        <p>Driving around town hoping the store you visit has what you need.</p>
+                        <p>The "Invisible Shelf" means products exist physically but remain digitally dark.</p>
                     </div>
                     <div class="problem-item">
                         <div class="icon-dot"></div>
-                        <p>Guessing who might carry the product you're looking for right now.</p>
+                        <p>Google and Yelp show you where a business is, but not what is actually inside it.</p>
                     </div>
                 </div>
 
                 <div class="solution-box">
-                    <h3>What if finding something nearby was as easy as searching for it?</h3>
-                    <p style="color: var(--text-light);">MSL is being developed to bridge the gap between local merchant inventory and your digital search.</p>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Making the Invisible, Visible.</h3>
+                    <p style="color: var(--text-light);">MSL is building the "Universal Translator" between physical inventory and digital search results.</p>
                 </div>
             </div>
         </section>
 
-        <!-- PARTICIPATION SECTION (STEP 2) -->
-        <section class="participation-section container">
+        <!-- PARTICIPATION SECTION -->
+        <section id="feedback" class="participation-section container">
+            <span class="section-tagline">Step 1</span>
             <h2>You can help build it.</h2>
-            <p class="intro">MainStreet Local is being developed to create a simpler way to discover what's available at local businesses. The technology is still being built, but the idea starts with the people who would actually use it.</p>
-            <p class="transition">Before we build it, we want to know what you want it to become.</p>
+            <p class="intro">The technology is being developed now. We need to know what you want it to become so we can build the right tools for your community.</p>
 
             <form id="feedbackForm" class="feedback-form">
                 <div class="form-grid">
@@ -618,7 +634,7 @@
                         <input type="text" id="search_query" placeholder="e.g. Metric bolts, locally roasted coffee" required>
                     </div>
                     <div class="form-group">
-                        <label for="location">Where do you want it?</label>
+                        <label for="location">Where do you live?</label>
                         <input type="text" id="location" placeholder="e.g. Fullerton, Downtown LA" required>
                     </div>
                     <div class="form-group">
@@ -641,9 +657,81 @@
                     <button type="submit" id="submitBtn" class="btn-submit">Submit Feedback</button>
                 </div>
             </form>
+        </section>
 
-            <div class="closing-statement">
-                <p>The technology comes next. The idea starts with you.</p>
+        <!-- SHARING SECTION -->
+        <section class="share-section">
+            <div class="container">
+                <span class="section-tagline">Spread the Word</span>
+                <h2>Share the Mission.</h2>
+                <p style="color: var(--text-light); max-width: 600px; margin: 0 auto;">Help us grow the MSL community by sharing this project with others.</p>
+                
+                <div class="share-buttons">
+                    <button class="btn-share" id="copyBtn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        Copy Link
+                    </button>
+                    <button class="btn-share" id="nativeShareBtn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.684 10.342L15.316 7M8.684 13.658l6.632 3.342M12 12m-3 0a3 3 0 106 0 3 3 0 10-6 0m-8 7a3 3 0 106 0 3 3 0 10-6 0m13-14a3 3 0 106 0 3 3 0 10-6 0"></path></svg>
+                        Share Mission
+                    </button>
+                    <a href="https://twitter.com/intent/tweet?text=I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission: https://mainstreet-local.vercel.app/" target="_blank" class="btn-share">
+                        Post to X
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ SECTION -->
+        <section class="faq-section">
+            <div class="container">
+                <span class="section-tagline">Common Questions</span>
+                <h2>Everything you need to know.</h2>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question">What is MainStreet Local? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>MainStreet Local (MSL) is an early-stage project building a unified information layer for the physical local economy. We are developing technology to make the specific products and services on local store shelves searchable and discoverable online.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">What is the "Invisible Shelf"? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>The "Invisible Shelf" refers to local dark-data: valuable products that exist in the real world but have no digital representation. If a store has an item in stock but you can't find that fact through a search engine, that product is sitting on an invisible shelf.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">How is MSL different from Google or Yelp? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>We aren't a map or a review site. Google and Yelp tell you *where* a business is; MSL is building the technology to tell you *what* is inside that business. We want to enhance search results by providing the missing inventory data layer.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Is MSL free for local merchants? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Our core mission is to empower independent local merchants. We are designing the system to be accessible to local businesses without requiring them to manage complicated new software or pay prohibitive fees.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Is MSL currently live? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>MSL is currently in active development. This site is the beginning of the system, focused on collecting community feedback and founding support while we test our data collection and unification prototypes.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">How can I help? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>You can help by submitting feedback through our form, sharing the mission with your neighbors, or becoming a Founding Supporter to help fund the research and development required to launch the network.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">What happens to information I submit? <span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Information provided to MSL is used specifically to help us understand local economic needs and build a more useful discovery system. We value the privacy of our community and will never sell your personal data to third parties.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -652,14 +740,14 @@
             <div class="container">
                 <span class="section-tagline">Help Build MSL</span>
                 <h2>Help Build MainStreet Local.</h2>
-                <p class="intro">MainStreet Local is an early-stage project being developed to make local businesses and what they have available easier to discover. Building and testing that system requires technology, research, and other resources.</p>
+                <p class="intro">MainStreet Local is an early-stage project. Building and testing a system that makes the physical economy visible requires dedicated technology, research, and resources.</p>
                 
                 <div class="support-box">
                     <div class="support-content">
-                        <h3>Support MSL</h3>
-                        <p>Your support helps fund the research, development, and testing required to move MSL from concept toward a working system.</p>
-                        <a href="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01" target="_blank" class="btn-support">Support MSL Founding Effort</a>
-                        <p class="small">Secure payment processing powered by Stripe.</p>
+                        <h3 style="margin-bottom: 1rem;">Founding Support</h3>
+                        <p style="color: var(--text-light); margin-bottom: 2rem;">Your support helps fund the development and testing required to move MSL from concept toward a working system.</p>
+                        <a href="https://buy.stripe.com/3cI5kv0Q198Z5p8gvKaZi01" target="_blank" class="btn-support">Support MSL Founding Effort ($10)</a>
+                        <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-light); opacity: 0.7;">Secure payment processing powered by Stripe.</p>
                     </div>
                 </div>
             </div>
@@ -671,27 +759,77 @@
     </footer>
 
     <script>
-        // Supabase configuration
+        // --- SEARCH DISCOVERY PREVIEW LOGIC ---
+        const findBtn = document.getElementById('findBtn');
+        const productInput = document.getElementById('productSearch');
+        const searchResult = document.getElementById('searchResult');
+        const resultTitle = document.getElementById('resultTitle');
+
+        findBtn.addEventListener('click', () => {
+            const query = productInput.value.trim();
+            if (query.length < 2) return;
+
+            resultTitle.innerText = `Searching for "${query}"...`;
+            searchResult.style.display = 'block';
+            searchResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // --- FAQ ACCORDION LOGIC ---
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // --- SHARING LOGIC ---
+        const copyBtn = document.getElementById('copyBtn');
+        const nativeShareBtn = document.getElementById('nativeShareBtn');
+        const shareUrl = "https://mainstreet-local.vercel.app/";
+        const shareText = "I'm helping build MainStreet Local, a new way to make products available at local businesses easier to discover online. Check out the mission.";
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerText = "Link Copied!";
+                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+            });
+        });
+
+        nativeShareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'MainStreet Local',
+                    text: shareText,
+                    url: shareUrl,
+                });
+            } else {
+                alert("Sharing not supported on this browser. Use the Post to X or Copy Link options!");
+            }
+        });
+
+        // --- SUPABASE CONFIGURATION ---
         const SUPABASE_URL = 'https://zhizypgnhjuipubjtxud.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_qZKPxq-P4YeUkqG7-HHxMA_LKzKN5SG';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const feedbackForm = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('submitBtn');
-        const formMessage = document.getElementById('formMessage');
 
         feedbackForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const formMessage = document.getElementById('formMessage');
             
-            // Basic validation
-            if (!feedbackForm.checkValidity()) {
-                feedbackForm.reportValidity();
-                return;
-            }
-
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting...';
-            formMessage.style.display = 'none';
 
             const formData = {
                 search_need: document.getElementById('search_query').value,
@@ -708,18 +846,15 @@
 
                 if (error) throw error;
 
-                // Success state
                 formMessage.innerText = "Thank you! Your feedback has been received.";
-                formMessage.className = 'message success';
-                formMessage.style.display = 'block';
+                formMessage.style.color = "var(--accent)";
                 feedbackForm.reset();
                 submitBtn.style.display = 'none';
 
             } catch (error) {
                 console.error('Error submitting feedback:', error);
-                formMessage.innerText = "Error: " + (error.message || "Something went wrong. Please try again.");
-                formMessage.className = 'message error';
-                formMessage.style.display = 'block';
+                formMessage.innerText = "Error: " + error.message;
+                formMessage.style.color = "red";
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Submit Feedback';
             }
