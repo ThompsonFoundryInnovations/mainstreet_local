@@ -54,6 +54,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        header.scrolled {
+            border-bottom-color: var(--border);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
 
         .logo-link {
@@ -853,6 +863,16 @@
     </div>
 
     <script>
+        // --- STICKY HEADER SCROLL EFFECT ---
+        const stickyHeader = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                stickyHeader.classList.add('scrolled');
+            } else {
+                stickyHeader.classList.remove('scrolled');
+            }
+        });
+
         // --- SEARCH DISCOVERY PREVIEW LOGIC ---
         const findBtn = document.getElementById('findBtn');
         const productInput = document.getElementById('productSearch');
@@ -1069,3 +1089,4 @@
     </script>
 </body>
 </html>
+
